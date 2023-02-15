@@ -1,0 +1,32 @@
+sms:
+  smpp:
+    host: 171.244.52.61
+    user-id: vnmonitor
+    password: 5sc2dw2K
+    requestDelivery: true
+    sourceAddress: VNetMonitor
+    destAddress: 84967891610
+    urlApi: http://171.244.52.61:8083/api/sentEx?
+    maxTimeToDelayConfig: 2000
+    allowSendAlert: true
+    emailTo: kienng2012@gmail.com
+    emailCc: ngkien161089@gmail.com
+    emailsCc: ducvnet@gmail.com, truongthien2310@gmail.com
+    userForApiCallback: vnet_monitor
+    passwordForApiCallback: MNTVntSe@6888V#
+#  spring:
+#    mail:
+#      host: smtp.gmail.com
+#      port: 587
+#      username: alert.vnet68@gmail.com
+#      password: ysxogoytxlywnbxp
+#      properties:
+#        mail:
+#          smtp:
+#            auth: true
+#            starttls:
+#              enable: true
+  async:
+    initial-delay: 30000
+    time-monitor: 180000
+
