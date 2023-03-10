@@ -1,36 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--https://howtodoinjava.com/spring-boot2/logging/spring-boot-logging-configurations/ -->
+<!--https://www.baeldung.com/java-logging-rolling-file-appenders-->
 <Configuration status="WARN" monitorInterval="30">
     <Properties>
         <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss} %p %m%n</Property>
-        <Property name="APP_LOG_ROOT">/home/ubuntu/logs</Property>
+        <Property name="APP_LOG_ROOT">/opt/monitor_vnet/logs</Property>
     </Properties>
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout pattern="${LOG_PATTERN}" />
+            <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
 
         <RollingFile name="file"
                      fileName="${APP_LOG_ROOT}/app.log"
-                     filePattern="${APP_LOG_ROOT}/app-%d{yyyy-MM-dd}.log">
-            <PatternLayout pattern="${LOG_PATTERN}" />
+                     filePattern="${APP_LOG_ROOT}/app-%d{yyyy-MM-dd}.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+
             <Policies>
-                <SizeBasedTriggeringPolicy size="700MB" />
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+                <TimeBasedTriggeringPolicy/>
             </Policies>
             <!-- Max 10 files will be created everyday -->
-            <DefaultRolloverStrategy max="1">
+            <DefaultRolloverStrategy max="10">
                 <Delete basePath="${APP_LOG_ROOT}" maxDepth="10">
                     <!-- Delete all files older than 30 days -->
-                    <IfLastModified age="45d" />
+                    <IfLastModified age="45d"/>
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>
 
     </Appenders>
+
+    <!--
+    <RollingFile name="roll-by-time-and-size"
+                 fileName="target/log4j2/roll-by-time-and-size/app.log"
+                 filePattern="target/log4j2/roll-by-time-and-size/app.%d{MM-dd-yyyy-HH-mm}.%i.log.gz"
+                 ignoreExceptions="false">
+        <PatternLayout>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} %p %m%n</Pattern>
+        </PatternLayout>
+        <Policies>
+            <OnStartupTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy
+                    size="5 KB"/>
+            <TimeBasedTriggeringPolicy/>
+        </Policies>
+        <DefaultRolloverStrategy>
+            <Delete basePath="${baseDir}" maxDepth="2">
+                <IfFileName
+                        glob="target/log4j2/roll-by-time-and-size/app.*.log.gz"/>
+                <IfLastModified age="20s"/>
+            </Delete>
+        </DefaultRolloverStrategy>
+    </RollingFile>
+    -->
     <Loggers>
         <Root level="info">
-            <AppenderRef ref="console" />
-            <AppenderRef ref="file" />
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="file"/>
         </Root>
     </Loggers>
 </Configuration>
